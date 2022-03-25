@@ -30,14 +30,4 @@ public class MySqlConnection {
         }
         return dbConnection;
     }
-
-    /*public Connection exit() {
-        try {
-            dbConnection.close();
-        } catch (SQLException e) {
-            log.error("SQL connection cannot be closed.");
-            e.printStackTrace();
-        }
-        return dbConnection;
-    }*/
 }
