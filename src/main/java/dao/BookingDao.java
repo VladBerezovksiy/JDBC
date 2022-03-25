@@ -2,6 +2,7 @@ package dao;
 
 import lombok.extern.slf4j.Slf4j;
 import model.Booking;
+import model.BookingDates;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -175,5 +176,10 @@ public class BookingDao extends JdbcDao implements GenericDao<Booking> {
             e.printStackTrace();
         }
         return bookingList;
+    }
+
+    @Override
+    public void create(BookingDates bookingDates) {
+
     }
 }
