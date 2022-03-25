@@ -29,6 +29,16 @@ public class BookingDao extends JdbcDao implements GenericDao<Booking> {
     public static final String SELECT_SQL_PATTERN =
             String.format("SELECT * FROM %s WHERE id = %s;", BOOKING_TABLE, "%s");
 
+    public static final String UPDATE_SQL_PATTERN = String.format("""
+            UPDATE %s
+            SET firstname=?, lastname=?
+            WHERE ID = %s;
+            """, BOOKING_TABLE, "%s");
+
+    public static final String DELETE_SQL_PATTERN = String.format("""
+            DELETE FROM %s
+            WHERE ID = %s
+            """, BOOKING_TABLE, "%s");
 
     public BookingDao() {
         super(BOOKING_TABLE);
@@ -37,7 +47,7 @@ public class BookingDao extends JdbcDao implements GenericDao<Booking> {
     @Override
     public void create(Booking booking) {
         String query = "";
-        try (PreparedStatement ps = connection.prepareStatement(INSERT_SQL_STATEMENT);) {
+        try (PreparedStatement ps = connection.prepareStatement(INSERT_SQL_STATEMENT)) {
             ps.setString(1, booking.getFirstname());
             ps.setString(2, booking.getLastname());
             ps.setDouble(3, booking.getTotalPrice());
@@ -105,13 +115,36 @@ public class BookingDao extends JdbcDao implements GenericDao<Booking> {
     }
 
     @Override
-    public Booking update(Booking booking) {
-        return null;
+    public Booking update(long id) {
+        String query = "";
+        Booking booking = Booking.builder()
+                .firstname("Vlad")
+                .lastname("Lol")
+                .build();
+        try (PreparedStatement ps = connection.prepareStatement(String.format(UPDATE_SQL_PATTERN, id))) {
+            ps.setString(1, booking.getFirstname());
+            ps.setString(2, booking.getLastname());
+            query = ps.toString();
+            ps.executeUpdate();
+            log.info(query);
+        } catch (SQLException e) {
+            log.error(join("Cannot execute statement", query));
+            e.printStackTrace();
+        }
+        return booking;
     }
 
     @Override
     public void delete(long id) {
-
+        String query = "";
+        try (PreparedStatement ps = connection.prepareStatement(String.format(DELETE_SQL_PATTERN, id))) {
+            query = ps.toString();
+            ps.executeUpdate();
+            log.info(query);
+        } catch (SQLException e) {
+            log.error(join("Cannot execute statement", query));
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -10,5 +10,8 @@ public class BookingDbReader2 {
         System.out.println(ArrayUtils.toString(bookingDao.readAll().toArray()).replaceAll("\\),", "\n"));
 
         System.out.printf("\n%s\n", bookingDao.read(2));
+        System.out.printf("\n%s\n", bookingDao.update(16));
+        bookingDao.delete(16);
+        System.out.println(ArrayUtils.toString(bookingDao.readAll().toArray()).replaceAll("\\),", "\n"));
     }
 }
